@@ -1,0 +1,7 @@
+USE sbl_test;
+
+	SELECT * FROM ;
+
+	SELECT * FROM events;
+
+	SELECT * FROM oee;
