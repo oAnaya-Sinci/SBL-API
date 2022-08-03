@@ -4,22 +4,13 @@
  * @Date: 2022-07-26 08:49:09 
  * @Desc: This file use callback functions to subscribe the tags to the PLC. 
  */
-import tag from "./dataTags.js";
+import {tagsSBL} from "./dataTags.js";
 
-console.time("sbl");
 let procecedData = [];
 
 async function readDataTags(group, n = 0) {
 
-  const tagData = tag.processTags(group);
-
-  // console.log( tagData );
-
-  // let data = "";
-  // for (const tag of tagData) {
-  //   data += tag.tag + ",<br>";
-  // }
-  // document.getElementById("dataToShow").innerHTML = data;
+  const tagData = tagsSBL[group];
 
   if (n >= tagData.length){
     console.timeEnd("sbl");
@@ -40,7 +31,7 @@ async function readDataTags(group, n = 0) {
 
     procecedData.push( typeof data == 'number' ? data : typeof data == 'string' ? `'${data}'` : 0 );
   
-  } ).catch(error => console.error(error));
+  }).catch(error => console.error(error));
 
   return readDataTags(group, n + 1);
 }
@@ -56,6 +47,8 @@ function sendDataToDB(group){
   };
 
   fetch("http://localhost:1880/sbl_tags/saveTagData", headers).then(response => response.json()).then(data => procecedData.push(data.data) ).catch(error => console.error(error));
+
+  return;
 }
 
 /** 
@@ -66,6 +59,9 @@ function sendDataToDB(group){
  */
 
 // setInterval(() => {
+  
+//   console.time("sbl");
+  
 //   readDataTags("oee");
 //   readDataTags("events");
 //   readDataTags("WC1");
@@ -74,6 +70,10 @@ function sendDataToDB(group){
 //   readDataTags("WC4");
 // }, 1000);
 
-  // readDataTags("oee");
-  // readDataTags("events");
-  readDataTags("WC4");
+readDataTags("oee");
+// readDataTags("events");
+// readDataTags("WC4");
+
+// console.log( tagsSBL['WC1_Presion'] );
+// console.log( tagsSBL['WC1_Presion'][0] );
+// console.log( JSON.stringify(tagsSBL['WC1_Presion'][0]) );
